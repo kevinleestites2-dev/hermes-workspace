@@ -151,9 +151,12 @@ export function HermesWorldLanding() {
             HermesWorld is a persistent multiplayer world where humans and AI agents play side-by-side. Pick a name, enter Agora, take quests, collect Hermes Sigils, and watch your companions keep working between sessions.
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <a href={playHref} className="group inline-flex items-center justify-center rounded-xl border border-[#ffe7a3]/55 bg-[linear-gradient(180deg,#ffe7a3,#d9a63f)] px-7 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#11100b] shadow-[0_30px_90px_rgba(217,179,95,.32),inset_0_1px_0_rgba(255,255,255,.32)] transition hover:-translate-y-0.5 hover:brightness-110">
               ▶ Enter the World <span className="ml-2 transition group-hover:translate-x-1">→</span>
+            </a>
+            <a href="/reserve" className="inline-flex items-center justify-center rounded-xl border border-[#d9b35f]/35 bg-[#d9b35f]/10 px-6 py-4 text-sm font-black uppercase tracking-[0.16em] text-[#f8e4ac] shadow-[0_0_30px_rgba(217,179,95,.08)] transition hover:border-[#d9b35f]/55 hover:bg-[#d9b35f]/16">
+              Reserve Name
             </a>
             <a href={HERMES_DISCORD_URL} {...externalLinkProps} className="inline-flex items-center justify-center rounded-xl border border-cyan-100/24 bg-[#0b1118]/82 px-6 py-4 text-sm font-black uppercase tracking-[0.16em] text-cyan-100/85 shadow-[inset_0_1px_0_rgba(255,255,255,.08)] backdrop-blur-xl transition hover:border-cyan-100/55 hover:bg-[#121823]">
               Join Discord
