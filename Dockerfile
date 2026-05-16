@@ -3,16 +3,21 @@
 #
 # ─── build stage ─────────────────────────────────────────────────────────
 FROM node:22-slim AS build
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates python3 make g++ && rm -rf /var/lib/apt/lists/*
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate && \
+    apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates python3 make g++ && \
+    rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
-# Use npm ci — bypasses pnpm 11 build-script blocking entirely
-COPY package.json package-lock.json* ./
-RUN npm install --legacy-peer-deps
+# Copy manifests
+COPY package.json pnpm-lock.yaml .npmrc pnpm-workspace.yaml ./
+
+# Install — pnpm 9 (no build-script blocking), onlyBuiltDependencies in workspace.yaml
+RUN pnpm install --frozen-lockfile
 
 # Copy sources and build
 COPY . .
-RUN npx vite build
+RUN pnpm build
 
 # ─── runtime stage ────────────────────────────────────────────────────────
 FROM node:22-slim
