@@ -15,8 +15,10 @@ RUN corepack enable && apt-get update && apt-get install -y --no-install-recomme
 WORKDIR /app
 
 # Install deps (cache-friendly: copy only manifests first)
-COPY package.json pnpm-lock.yaml* ./
-RUN pnpm install --frozen-lockfile
+COPY package.json pnpm-lock.yaml* .npmrc* ./
+RUN pnpm config set unsafe-perm true && \
+    pnpm install --frozen-lockfile --ignore-scripts && \
+    pnpm rebuild esbuild || true
 
 # Copy sources and build
 COPY . .
