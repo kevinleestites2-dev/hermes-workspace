@@ -1,0 +1,8 @@
+onlyBuiltDependencies:
+  - esbuild
+  - electron
+  - electron-builder
+  - electron-winstaller
+  - unrs-resolver
+  - playwright
+  - puppeteer-extra-plugin-stealth
