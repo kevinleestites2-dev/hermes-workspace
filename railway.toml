@@ -1,5 +1,6 @@
 [build]
 builder = "nixpacks"
+buildCommand = "pnpm install --ignore-scripts && pnpm build"
 
 [deploy]
 startCommand = "pnpm start"
