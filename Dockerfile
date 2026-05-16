@@ -3,20 +3,16 @@
 #
 # ─── build stage ─────────────────────────────────────────────────────────
 FROM node:22-slim AS build
-RUN corepack enable && apt-get update && apt-get install -y --no-install-recommends ca-certificates python3 make g++ && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates python3 make g++ && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
-# Install deps — ignore native build scripts first, then rebuild esbuild explicitly
-COPY package.json pnpm-lock.yaml* .npmrc* pnpm-workspace.yaml* ./
-RUN pnpm config set unsafe-perm true && \
-    pnpm install --frozen-lockfile --ignore-scripts && \
-    ./node_modules/.bin/esbuild --version || \
-    (cd node_modules/esbuild && node install.js) || \
-    npx --yes esbuild@0.27.7 || true
+# Use npm ci — bypasses pnpm 11 build-script blocking entirely
+COPY package.json package-lock.json* ./
+RUN npm install --legacy-peer-deps
 
 # Copy sources and build
 COPY . .
-RUN pnpm build
+RUN npx vite build
 
 # ─── runtime stage ────────────────────────────────────────────────────────
 FROM node:22-slim
